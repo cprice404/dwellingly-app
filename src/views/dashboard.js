@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import UserContext from '../UserContext';
+import ToastContext from '../ToastContext';
 import useMountEffect from '../utils/useMountEffect';
 import { MODULE_DATA } from '../components/DashboardModule/data';
 import DashboardModule from '../components/DashboardModule';
@@ -19,6 +20,7 @@ export const Dashboard = (props) => {
     const [usersPending, setUsersPending] = useState([]);
     const history = useHistory();  
     const userContext = useContext(UserContext);
+    const toastContext = useContext(ToastContext);
 
     useMountEffect(() => {
         axios
@@ -72,6 +74,7 @@ export const Dashboard = (props) => {
     }
 
     const handleStaffAssignment = () => {
+        toastContext.notify("", "");
         if(!areStaffAssigned) return;
 
         const tenantUpdateReqs = unstaffedTenants

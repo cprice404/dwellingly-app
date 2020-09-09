@@ -27,6 +27,9 @@ import Manager from "./views/Manager";
 import { JoinStaff } from "./views/joinStaff";
 import { AddStaffMember } from "./views/addStaffMember";
 import UserContext from "./UserContext";
+import ToastContext from "./ToastContext";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 var refreshTimeout;
 
@@ -140,45 +143,65 @@ export class App extends React.Component {
       });
   }
 
+  notify = (text, type) => {
+    toast("Notification", {
+      
+    })
+}
+
   render() {
     return (
-      <UserContext.Provider value={{ user: { ...this.state.userSession }, login: this.login, logout: this.logout }} >
-        <BrowserRouter>
-          <div className='App'>
-            {this.state.userSession.isAuthenticated
-              && <><NavMenu />
-                  <Header /></>}
-              <Switch>
-                <Route exact path='/login' component={LoginForm} />
-                <Route exact path='/signup' component={SignupForm} />
-                <Route exact path='/terms' component={Terms} />
-                <div className='main-container'>
-                  <PrivateRoute exact path='/' component={Dashboard} />
-                  <PrivateRoute exact path='/dashboard' component={Dashboard} />
-                  <PrivateRoute exact path='/home' component={Dashboard} />
-                  <PrivateRoute exact path='/add/tenant' component={Dashboard} />
-                  <PrivateRoute exact path='/add/property' component={AddProperty}/>
-                  <PrivateRoute exact path='/add/manager' component={Dashboard} />
-                  <PrivateRoute exact path='/manage/tenants' component={Tenants} />
-                  <PrivateRoute exact path='/add/emergencycontact' component={AddEmergencyContact} />
-                  <PrivateRoute exact path='/edit/emergencycontact/:id' component={AddEmergencyContact} />
-                  <PrivateRoute exact path='/manage/properties' component={Properties} />
-                  <PrivateRoute exact path='/manage/managers' component={Managers} />
-                  <PrivateRoute exact path='/manage/manager/:id' component={Manager} />
-                  <PrivateRoute exact path='/tickets' component={Tickets} />
-                  <PrivateRoute exact path='/reports' component={Dashboard} />
-                  <PrivateRoute exact path='/staff' component={JoinStaff} />
-                  <PrivateRoute exact path='/staff/add' component={AddStaffMember} />
-                  <PrivateRoute exact path='/emergency' component={EmergencyContacts} />
-                  <PrivateRoute exact path='/settings' component={Dashboard} />
-                  <PrivateRoute exact path='/request-access/:id' component={RequestAccess} />
-                </div>
-              </Switch>
-            {this.state.userSession.isAuthenticated
-              && <Footer />}
-          </div>
-        </BrowserRouter>
-      </UserContext.Provider>
+      <ToastContext.Provider value = {{notify: this.notify}}>
+        <UserContext.Provider value={{ user: { ...this.state.userSession }, login: this.login, logout: this.logout }} >
+          <BrowserRouter>
+            <div className='App'>
+              {this.state.userSession.isAuthenticated
+                && <><NavMenu />
+                    <Header /></>}
+                <Switch>
+                  <Route exact path='/login' component={LoginForm} />
+                  <Route exact path='/signup' component={SignupForm} />
+                  <Route exact path='/terms' component={Terms} />
+                  <div className='main-container'>
+                    <PrivateRoute exact path='/' component={Dashboard} />
+                    <PrivateRoute exact path='/dashboard' component={Dashboard} />
+                    <PrivateRoute exact path='/home' component={Dashboard} />
+                    <PrivateRoute exact path='/add/tenant' component={Dashboard} />
+                    <PrivateRoute exact path='/add/property' component={AddProperty}/>
+                    <PrivateRoute exact path='/add/manager' component={Dashboard} />
+                    <PrivateRoute exact path='/manage/tenants' component={Tenants} />
+                    <PrivateRoute exact path='/add/emergencycontact' component={AddEmergencyContact} />
+                    <PrivateRoute exact path='/edit/emergencycontact/:id' component={AddEmergencyContact} />
+                    <PrivateRoute exact path='/manage/properties' component={Properties} />
+                    <PrivateRoute exact path='/manage/managers' component={Managers} />
+                    <PrivateRoute exact path='/manage/manager/:id' component={Manager} />
+                    <PrivateRoute exact path='/tickets' component={Tickets} />
+                    <PrivateRoute exact path='/reports' component={Dashboard} />
+                    <PrivateRoute exact path='/staff' component={JoinStaff} />
+                    <PrivateRoute exact path='/staff/add' component={AddStaffMember} />
+                    <PrivateRoute exact path='/emergency' component={EmergencyContacts} />
+                    <PrivateRoute exact path='/settings' component={Dashboard} />
+                    <PrivateRoute exact path='/request-access/:id' component={RequestAccess} />
+                  </div>
+                </Switch>
+              {this.state.userSession.isAuthenticated
+                && <Footer />}
+            </div>
+          </BrowserRouter>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={4000}
+            hideProgressBar
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+        </UserContext.Provider>
+      </ToastContext.Provider>
+
     );
   }
 }
